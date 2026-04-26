@@ -11,6 +11,7 @@ public class AppDbContext : DbContext
     public DbSet<MenuItem> MenuItems => Set<MenuItem>();
     public DbSet<Order> Orders => Set<Order>();
     public DbSet<OrderDetail> OrderDetails => Set<OrderDetail>();
+    public DbSet<User> Users => Set<User>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -39,6 +40,15 @@ public class AppDbContext : DbContext
                 .WithMany(c => c.Orders)
                 .HasForeignKey(o => o.ClientId)
                 .OnDelete(DeleteBehavior.Restrict);
+        });
+
+        modelBuilder.Entity<User>(e =>
+        {
+            e.HasKey(u => u.Id);
+            e.Property(u => u.Username).IsRequired().HasMaxLength(50);
+            e.HasIndex(u => u.Username).IsUnique();
+            e.Property(u => u.PasswordHash).IsRequired();
+            e.Property(u => u.Role).IsRequired().HasMaxLength(20);
         });
 
         modelBuilder.Entity<OrderDetail>(e =>

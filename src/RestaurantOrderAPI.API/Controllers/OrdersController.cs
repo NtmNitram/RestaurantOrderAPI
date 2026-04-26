@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RestaurantOrderAPI.Application.DTOs;
 using RestaurantOrderAPI.Application.Interfaces;
@@ -7,6 +8,7 @@ namespace RestaurantOrderAPI.API.Controllers;
 [ApiController]
 [Route("api/[controller]")]
 [Produces("application/json")]
+[Authorize]
 public class OrdersController : ControllerBase
 {
     private readonly IOrderService _orderService;
@@ -36,6 +38,7 @@ public class OrdersController : ControllerBase
     /// Si no se proporciona fecha, se devuelve el resumen de hoy.
     /// </summary>
     [HttpGet("summary/daily")]
+    [Authorize(Roles = "Dueño")]
     public async Task<IActionResult> GetDailySummary([FromQuery] DateTime? date)
     {
         var targetDate = date ?? DateTime.Now;

@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RestaurantOrderAPI.Application.DTOs;
 using RestaurantOrderAPI.Application.Interfaces;
@@ -7,6 +8,7 @@ namespace RestaurantOrderAPI.API.Controllers;
 [ApiController]
 [Route("api/[controller]")]
 [Produces("application/json")]
+[Authorize]
 public class MenuItemsController : ControllerBase
 {
     private readonly IMenuItemService _menuItemService;

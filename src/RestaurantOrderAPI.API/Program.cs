@@ -1,5 +1,9 @@
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using RestaurantOrderAPI.API.Middleware;
+using RestaurantOrderAPI.API.Services;
 using RestaurantOrderAPI.Application.Interfaces;
 using RestaurantOrderAPI.Application.Services;
 using RestaurantOrderAPI.Domain.Interfaces;
@@ -18,8 +22,7 @@ builder.Services.AddSwaggerGen(c =>
     {
         Title = "Restaurant Order API",
         Version = "v1",
-        Description = "Sistema de gestión de pedidos para restaurante en mercado/plaza. " +
-                      "Permite registrar clientes, menú, pedidos y generar resumen de cobro diario."
+        Description = "Sistema de gestión de pedidos para restaurante en mercado/plaza."
     });
 });
 
@@ -27,13 +30,34 @@ builder.Services.AddSwaggerGen(c =>
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+// ── JWT Authentication ───────────────────────────────────────────────────────
+var jwtKey = builder.Configuration["Jwt:Key"]!;
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = builder.Configuration["Jwt:Issuer"],
+            ValidAudience = builder.Configuration["Jwt:Audience"],
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey)),
+        };
+    });
+
+builder.Services.AddAuthorization();
+
 // ── Dependency Injection ─────────────────────────────────────────────────────
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IClientService, ClientService>();
 builder.Services.AddScoped<IMenuItemService, MenuItemService>();
 builder.Services.AddScoped<IOrderService, OrderService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<ITokenService, JwtTokenService>();
 
-// ── CORS (allow any origin for local network access) ─────────────────────────
+// ── CORS ─────────────────────────────────────────────────────────────────────
 builder.Services.AddCors(options =>
     options.AddDefaultPolicy(policy =>
         policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()));
@@ -53,11 +77,12 @@ app.UseSwagger();
 app.UseSwaggerUI(c =>
 {
     c.SwaggerEndpoint("/swagger/v1/swagger.json", "Restaurant Order API v1");
-    c.RoutePrefix = string.Empty; // Swagger UI at root: http://localhost:5000
+    c.RoutePrefix = string.Empty;
 });
 
 app.UseMiddleware<ExceptionMiddleware>();
 app.UseCors();
+app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 

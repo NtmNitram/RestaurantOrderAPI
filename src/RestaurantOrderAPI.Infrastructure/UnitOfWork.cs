@@ -14,11 +14,13 @@ public class UnitOfWork : IUnitOfWork
         Clients = new ClientRepository(context);
         MenuItems = new MenuItemRepository(context);
         Orders = new OrderRepository(context);
+        Users = new UserRepository(context);
     }
 
     public IClientRepository Clients { get; }
     public IMenuItemRepository MenuItems { get; }
     public IOrderRepository Orders { get; }
+    public IUserRepository Users { get; }
 
     public async Task<int> SaveChangesAsync() =>
         await _context.SaveChangesAsync();
