@@ -2,13 +2,17 @@ namespace RestaurantOrderAPI.Application.DTOs;
 
 public record CreateClientDto(
     string Nombre,
-    string NumeroLocal,
+    string Tipo,
+    string? NumeroLocal,
+    string? Referencia,
     string? Telefono
 );
 
 public record UpdateClientDto(
     string Nombre,
-    string NumeroLocal,
+    string Tipo,
+    string? NumeroLocal,
+    string? Referencia,
     string? Telefono,
     bool Activo
 );
@@ -16,7 +20,9 @@ public record UpdateClientDto(
 public record ClientResponseDto(
     int Id,
     string Nombre,
-    string NumeroLocal,
+    string Tipo,
+    string? NumeroLocal,
+    string? Referencia,
     string? Telefono,
     bool Activo
 );

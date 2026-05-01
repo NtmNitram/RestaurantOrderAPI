@@ -19,7 +19,9 @@ public class AppDbContext : DbContext
         {
             e.HasKey(c => c.Id);
             e.Property(c => c.Name).IsRequired().HasMaxLength(100);
-            e.Property(c => c.LocalNumber).IsRequired().HasMaxLength(20);
+            e.Property(c => c.Tipo).IsRequired().HasMaxLength(20);
+            e.Property(c => c.LocalNumber).HasMaxLength(20);
+            e.Property(c => c.Referencia).HasMaxLength(200);
             e.Property(c => c.PhoneNumber).HasMaxLength(20);
         });
 

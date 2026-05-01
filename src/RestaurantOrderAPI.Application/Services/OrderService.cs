@@ -125,7 +125,9 @@ public class OrderService : IOrderService
                 return new ClientDailySummaryDto(
                     client.Id,
                     client.Name,
+                    client.Tipo,
                     client.LocalNumber,
+                    client.Referencia,
                     client.PhoneNumber,
                     pedidosCobrar.Select(o => new OrderSummaryItemDto(
                         o.Id,
@@ -145,7 +147,8 @@ public class OrderService : IOrderService
                     pedidosCobrar.Sum(o => o.Total)
                 );
             })
-            .OrderBy(c => c.NumeroLocal)
+            .OrderBy(c => c.Tipo)
+            .ThenBy(c => c.NumeroLocal ?? c.NombreCliente)
             .ToList();
 
         return new DailySummaryDto(
@@ -184,7 +187,8 @@ public class OrderService : IOrderService
             o.Id,
             o.ClientId,
             o.Client?.Name ?? string.Empty,
-            o.Client?.LocalNumber ?? string.Empty,
+            o.Client?.LocalNumber,
+            o.Client?.Referencia,
             o.OrderDate,
             TraducirEstado(o.Status),
             o.Notes,

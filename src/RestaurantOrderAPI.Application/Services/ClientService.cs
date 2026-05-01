@@ -32,7 +32,9 @@ public class ClientService : IClientService
         var client = new Client
         {
             Name = dto.Nombre,
+            Tipo = dto.Tipo,
             LocalNumber = dto.NumeroLocal,
+            Referencia = dto.Referencia,
             PhoneNumber = dto.Telefono,
             IsActive = true
         };
@@ -47,7 +49,9 @@ public class ClientService : IClientService
             ?? throw new KeyNotFoundException($"Cliente con ID {id} no encontrado.");
 
         client.Name = dto.Nombre;
+        client.Tipo = dto.Tipo;
         client.LocalNumber = dto.NumeroLocal;
+        client.Referencia = dto.Referencia;
         client.PhoneNumber = dto.Telefono;
         client.IsActive = dto.Activo;
 
@@ -65,5 +69,5 @@ public class ClientService : IClientService
     }
 
     private static ClientResponseDto MapToResponse(Client c) =>
-        new(c.Id, c.Name, c.LocalNumber, c.PhoneNumber, c.IsActive);
+        new(c.Id, c.Name, c.Tipo, c.LocalNumber, c.Referencia, c.PhoneNumber, c.IsActive);
 }

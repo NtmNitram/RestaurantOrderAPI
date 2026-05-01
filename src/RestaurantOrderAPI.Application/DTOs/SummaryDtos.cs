@@ -12,7 +12,9 @@ public record OrderSummaryItemDto(
 public record ClientDailySummaryDto(
     int ClienteId,
     string NombreCliente,
-    string NumeroLocal,
+    string Tipo,
+    string? NumeroLocal,
+    string? Referencia,
     string? Telefono,
     List<OrderSummaryItemDto> Pedidos,
     decimal TotalACobrar

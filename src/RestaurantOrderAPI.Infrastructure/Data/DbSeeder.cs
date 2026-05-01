@@ -29,11 +29,12 @@ public static class DbSeeder
             );
 
             context.Clients.AddRange(
-                new Client { Name = "Papelería El Sol",      LocalNumber = "A-12", PhoneNumber = "555-1001", IsActive = true },
-                new Client { Name = "Zapatería Martínez",    LocalNumber = "B-05", PhoneNumber = "555-1002", IsActive = true },
-                new Client { Name = "Carnicería Hernández",  LocalNumber = "C-08", PhoneNumber = null,       IsActive = true },
-                new Client { Name = "Ferretería González",   LocalNumber = "D-03", PhoneNumber = "555-1004", IsActive = true },
-                new Client { Name = "Farmacia La Salud",     LocalNumber = "A-01", PhoneNumber = "555-1005", IsActive = true }
+                new Client { Name = "Papelería El Sol",      Tipo = "Plaza", LocalNumber = "A-12", PhoneNumber = "555-1001", IsActive = true },
+                new Client { Name = "Zapatería Martínez",    Tipo = "Plaza", LocalNumber = "B-05", PhoneNumber = "555-1002", IsActive = true },
+                new Client { Name = "Carnicería Hernández",  Tipo = "Plaza", LocalNumber = "C-08", PhoneNumber = null,       IsActive = true },
+                new Client { Name = "Ferretería González",   Tipo = "Plaza", LocalNumber = "D-03", PhoneNumber = "555-1004", IsActive = true },
+                new Client { Name = "Farmacia La Salud",     Tipo = "Plaza", LocalNumber = "A-01", PhoneNumber = "555-1005", IsActive = true },
+                new Client { Name = "Frutas y Verduras Reyes", Tipo = "Externo", Referencia = "Av. Ferrocarril 14, frente al metro", PhoneNumber = "555-2001", IsActive = true }
             );
         }
 
